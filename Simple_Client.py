@@ -5,7 +5,6 @@ Created on Thu Nov 11 15:48:09 2021
 @author: aos82
 """
 
-#!/usr/bin/env python3
 
 import socket
 
