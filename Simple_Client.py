@@ -15,6 +15,6 @@ PORT = 65432        # The port used by the server
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT)) #Connects to the server
     s.sendall(b'Are the bees swarming?') #send its message
-    data = s.recv(1024) # read the server’s reply and then prints it
+    data = s.recv(1024) # read the server’s reply and then prints it (1024 bytes) buffer size
 
 print('Received', repr(data))

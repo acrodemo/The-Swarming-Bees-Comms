@@ -7,7 +7,7 @@ Created on Thu Nov 11 13:03:56 2021
 
 import socket
 
-HOST = '127.0.0.1'  # Standard loopback interface address (localhost) can be a hostname, IP address, or empty string
+HOST = ''  # Standard loopback interface address (localhost) can be a hostname, IP address, or empty string
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023) should be an integer from 1-65535 (0 is reserved).
 
 #socket.socket creates a socket object that supports the context manager type
