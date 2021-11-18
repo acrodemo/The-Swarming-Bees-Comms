@@ -1,0 +1,27 @@
+
+"""
+host, port = sys.argv[1], int(sys.argv[2]) #command line arguments
+ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #ls = listen socket , AF_INET=(IPv4), SOCK_STREAM= TCP PORT  
+ls.bind((host, port)) #bind because socket.AF_INET requires 2-tuple (host, TCP port)
+ls.listen() #listen() enables a server to connect to accept() connection
+print("listening via", (host, port))
+ls.setblocking(False) # False = non-blocking mode, using with sel.select() allowing to wait for an events of a socket >= 1 (mulitple)
+sel.register(ls, selectors.EVENT_READ, data=None) #selector.register registers the socket being monitored, unregister REQUIRED once socekt is closed, read mode selected
+
+
+"""
+Event Loop
+"""
+try:
+    while True:
+        events = sel.select(timeout=None) #blocks until socket available for I/O (form:ready file object, timeout = specifies max wait time in secs 
+        #returns (key,event) tuples one for each socket
+        for key, mask in events: # mask = event mask of operation that is ready
+            if key.data is None: #If key.data is none means its the listening socket
+                accept_conn(key.fileobj) #accept_Conn module is used to accept connection and and fill in key.data, key.fileobj = socket object
+            else:
+                manage_conn(key, mask) #If key.data != none would mean a client socket has been accepted, and we must manage/service connection
+except KeyboardInterrupt:
+    print("caught keyboard interrupt, exiting")
+finally:
+    sel.close()
