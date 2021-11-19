@@ -25,12 +25,11 @@ s.connect((HOST, PORT)) #Connects to the server
 s.send(f"{filename}{space}{filesize}".encode())
 
 bar = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True, unit_divisor=512)
-while True:
-    # read the bytes from the file
-    f = open(filename,'rb')
-    data = f.read(buffer_size)
-    while data:
-        s.sendall(data)
+with open(filename, "rb") as f:
+    while True:
         data = f.read(buffer_size)
+        if not data:
+            break
+        s.sendall(data)
         bar.update(len(data))
-    f.close()
+s.close()

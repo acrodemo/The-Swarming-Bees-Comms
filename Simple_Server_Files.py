@@ -30,15 +30,14 @@ filename, filesize = recv.split(space)
 filename = os.path.basename(filename)
 filesize = int(filesize)
 
-bar = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=512)
+bar = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=256)
 with open(filename, "wb") as f:
     while True: #infinite while loop
-        data = s.recv(buffer_size) #reads whatever data the client sends and echoes it back using conn.sendall() (1024 bytes) buffer size
-        if not data:
+        data_read = conn.recv(buffer_size) #reads whatever data the client sends and echoes it back using conn.sendall() (1024 bytes) buffer size
+        if not data_read:
             break
-        f.write(data)
-        bar.update(len(data))
+        f.write(data_read)
+        bar.update(len(data_read))
 
-        f.close()        
-        conn.close()
-        s.close()
+conn.close()        
+s.close()

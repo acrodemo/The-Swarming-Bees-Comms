@@ -1,27 +1,80 @@
-
+This is only a test
+# -*- coding: utf-8 -*-
 """
-host, port = sys.argv[1], int(sys.argv[2]) #command line arguments
-ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #ls = listen socket , AF_INET=(IPv4), SOCK_STREAM= TCP PORT  
-ls.bind((host, port)) #bind because socket.AF_INET requires 2-tuple (host, TCP port)
-ls.listen() #listen() enables a server to connect to accept() connection
-print("listening via", (host, port))
-ls.setblocking(False) # False = non-blocking mode, using with sel.select() allowing to wait for an events of a socket >= 1 (mulitple)
-sel.register(ls, selectors.EVENT_READ, data=None) #selector.register registers the socket being monitored, unregister REQUIRED once socekt is closed, read mode selected
+Created on Thu Nov 11 15:48:09 2021
+
+@author: aos82
+"""
 
 
-"""
-Event Loop
-"""
-try:
+import socket
+import tqdm
+import os
+space = "<space>"
+buffer_size = 1024
+
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT = 65432        # The port used by the server
+
+filename = "GPS_Data.txt"
+filesize = os.path.getsize(filename) 
+print(int(filesize))
+
+#creates socket object
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT)) #Connects to the server    
+s.send(f"{filename}{space}{filesize}".encode())
+
+bar = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True, unit_divisor=512)
+with open(filename, "rb") as f:
     while True:
-        events = sel.select(timeout=None) #blocks until socket available for I/O (form:ready file object, timeout = specifies max wait time in secs 
-        #returns (key,event) tuples one for each socket
-        for key, mask in events: # mask = event mask of operation that is ready
-            if key.data is None: #If key.data is none means its the listening socket
-                accept_conn(key.fileobj) #accept_Conn module is used to accept connection and and fill in key.data, key.fileobj = socket object
-            else:
-                manage_conn(key, mask) #If key.data != none would mean a client socket has been accepted, and we must manage/service connection
-except KeyboardInterrupt:
-    print("caught keyboard interrupt, exiting")
-finally:
-    sel.close()
+        data = f.read(buffer_size)
+        if not data:
+            break
+        s.sendall(data)
+        bar.update(len(data))
+s.close()
+
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov 11 13:03:56 2021
+
+@author: aos82
+"""
+
+import socket
+import tqdm
+import os
+
+space = "<space>"
+buffer_size = 1024
+HOST = '0.0.0.0'  # Standard loopback interface address (localhost) can be a hostname, IP address, or empty string
+PORT = 65432        # Port to listen on (non-privileged ports are > 1023) should be an integer from 1-65535 (0 is reserved).
+
+#socket.socket creates a socket object that supports the context manager type
+#socket type. AF_INET is the Internet address family for IPv4
+#SOCK_STREAM is the socket type for TCP
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT)) #bind() is used to associate the socket with a specific network interface and port number
+s.listen(4) #listen() enables a server to accept() connections
+print("listening via", (HOST, PORT))
+
+conn, addr = s.accept() #accept() blocks and waits for an incoming connection
+print('Connected by', addr)
+
+recv = conn.recv(buffer_size).decode()
+filename, filesize = recv.split(space)
+filename = os.path.basename(filename)
+filesize = int(filesize)
+
+bar = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True, unit_divisor=512)
+with open(filename, "wb") as f:
+    while True: #infinite while loop
+        data_read = conn.recv(buffer_size) #reads whatever data the client sends and echoes it back using conn.sendall() (1024 bytes) buffer size
+        if not data_read:
+            break
+        f.write(data_read)
+        bar.update(len(data_read))
+
+conn.close()        
+s.close()
