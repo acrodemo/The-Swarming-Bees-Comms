@@ -17,7 +17,7 @@ buffer_size = 1024
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT = 65432        # The port used by the server
 
-filename = "20131124_144634.mp4"
+filename = "Comics.zip"
 filesize = os.path.getsize(filename) 
 
 #creates socket object
@@ -26,7 +26,7 @@ s.connect((HOST, PORT)) #Connects to the server
 s.send(f"{filename}{space}{filesize}".encode())
 
 
-bar = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True, unit_divisor=256, colour ='#00ff00')
+bar = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True, unit_divisor=1024, colour ='#00ff00')
 with open(filename, "rb") as f:
 
     while True:

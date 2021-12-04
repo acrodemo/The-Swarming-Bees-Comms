@@ -52,4 +52,4 @@ time = end-start
 xfr_rate = filesize / time
 
 
-print('\n\nTime = {:.2}s \nFile size = {:.2} MB \nTransfer rate = {:.3} MB/s\n'.format(time, filesize/(1024*1024), xfr_rate/(1024*1024)))
+print('\n\nTime = {:.4}s \nFile size = {:.8} MB \nTransfer rate = {:.4} MB/s\n'.format(time, filesize/(1024*1024), xfr_rate/(1024*1024)))
