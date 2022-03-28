@@ -1,55 +1,28 @@
-# The-Swarming-Bees-Comms
-All software pertaining to the development of an inter-drone communication network for CU Denver 2022 Engineering Senior Capstone project. 
+# Drone Simulation
+## Overview
+This is a simulation to show how the mesh network of our communication system operates in real time. 
+Flight plans can be coded in to the system, and you can visually see how data is transferred between each drone.
+***
+### Icon Guide
+
+<br>
 
 
-## Summary for Using Git through Terminal
-1. Clone Repo
-2. Make & Checkout Branch
-```
-$ git checkout -b yourBranchName
-```
-3. Code
-4. Stage Changes
-```
-$ git add yourFileName
-```
-5. Commit Changes
-```
-$ git commit -m"Your Message Here"
-```
-6. Push/Publish Branch to Remote
-```
-$ git push -u origin yourBranchName
-```
-7. Create Pull Request On Github.com
-8. Delete Branch
+| Object | Description | Image |
+| ------ | ----------- | ----- |
+| Base Station | Central immobile station <br> first responders will interface <br> with. | <img src="markdownImages/baseStation.png" width="128" style="display: flex;align-items:center;"/> |
+| Drone | One of the many drones <br> data will be collected from <br> or transferred to. | <img src="markdownImages/drone.png" width="128" style="display: flex;align-items:center;"/>| 
+| Connection | A connection line established <br> by the mesh network through <br> batman-advanced. (Blue lines <br> simply mean the connection is <br> directly to the base station.)| <img src="markdownImages/connection.png" width="128" style="display: flex;align-items:center;"/> | 
+| Packet | This represents a packet of <br> information that needs to be<br> transferred back to the base <br> station. | <img src="markdownImages/packet.png" width ="128" style="display: flex; align-items:center;">
 
+<br>
 
+---
 
+## How To Use
+Launch droneSim.py. This will open a pygame window. Currently, there is no GUI to assign flight paths. The only inputs implemented are spacebar - which sends a packet from Drone 0, and the arrow keys, which move Drone 0 around. This is purely a proof of concept and a useful demonstration. The code will be built out soon so that it can be used as a more robust system.
 
+There are comments inside of droneSim.py that show where and how to program flight paths or change drone sources. Some python experience is necessary.
 
-## Summary for Using Git Through VSCode
-##### Note: Command Palette = ctrl+shift+p
-
-1. Open new workspace and clone repo
-2. Palette -> Git:Checkout to -> Create new Branch -> Enter branch name
-3. Code
-4. Palette -> Git:Stage all changes
-5. Palette -> Git:Commit all -> type name of branch
-6. Palette -> Git:Publish branch
-6. Palette -> Git:Push
-7. Either create pull request on github.com or install github pull request extension and use the pull request command from palette 
-8. Pull request extension has a delete branch button, otherwise: 
-   Palette -> Git:Delete Branch
-
-
-
-
-
-
-## Conventions and Guidelines
-yourname/topicYouAreWorkingOn
-
-Please use snakeCase and document your code well. 
-
-Any major classes and/or functions should have documented inputs, outputs, and overall descriptions.
+#### NOTE:
+entities.py and grid.py must be in the same folder as droneSim.py in order for the application to run. 
