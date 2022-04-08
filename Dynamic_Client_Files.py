@@ -7,15 +7,15 @@ buffer_size = 1024
 HOST = socket.gethostbyname(socket.gethostname())  # The server's hostname or IP address
 PORT = 65432        # The port used by the server
 CLIENT_PATH = "SEND_FILES" 
-filename = "Comics.zip"
 
 def main():
     path_exist()
-    file = os.listdir(CLIENT_PATH)
-    run_client()
+    filename = os.listdir(CLIENT_PATH)[0]
+    print(filename)
+    run_client(filename)
     
     
-def run_client ():
+def run_client (filename):
     filesize = os.path.getsize(filename) 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT)) #Connects to the server    
