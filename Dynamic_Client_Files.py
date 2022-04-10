@@ -5,7 +5,7 @@ import os #os Library
 
 space = "<space>" # Adds Space
 buffer_size = 1024 #number of bytes
-HOST = socket.gethostbyname(socket.gethostname())  # The server's hostname or IP address
+HOST = socket.gethostbyname(socket.gethostname())  #the server's hostname or IP address
 PORT = 65432        # The port used by the server
 CLIENT_PATH = "SEND_FILES" #Folder name
 
